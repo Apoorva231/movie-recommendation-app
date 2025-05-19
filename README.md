@@ -17,12 +17,6 @@ A Flask-based movie recommendation web app that uses weighted popularity scores 
 
 ---
 
-## 📸 Screenshot
-
-> _Add a screenshot of your homepage or movie cards here!_
-
----
-
 ## 🛠 Tech Stack
 
 - **Backend:** Python, Flask  
