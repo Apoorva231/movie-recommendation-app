@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Popular Movies</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="{{ url_for('redirect_home') }}" class="home-button">🏠 Home</a>
+      <h1>Top Rated Movies</h1>
+    </div>
+
+    <!-- Filter Form -->
+    <form method="get" class="filters">
+      <input type="text" name="q" placeholder="Search movies..." value="{{ request.args.get('q', '') }}">
+      <select name="year">
+        <option value="">All Years</option>
+        {% for y in years %}
+          <option value="{{ y }}" {% if request.args.get('year') == y %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+      <select name="genre">
+        <option value="">All Genres</option>
+        {% for g in genres %}
+          <option value="{{ g }}" {% if request.args.get('genre') == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+
+    <!-- Movie Grid -->
+    <div class="grid">
+      {% for movie in movies %}
+      <a class="card-link" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+        <div class="card">
+          {% if movie.poster_url %}
+          <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+          {% else %}
+          <div class="placeholder">No Image</div>
+          {% endif %}
+          <div class="info">
+            <h2>{{ movie.title }}</h2>
+            <p class="release">Release: {{ movie.release_date or "N/A" }}</p>
+            <p class="rating">⭐ {{ movie.vote_average }}</p>
+            <p class="overview">{{ movie.overview[:200] }}{% if movie.overview|length > 200 %}...{% endif %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      {% if page > 1 %}
+      <a href="{{ url_for('home', page=page-1, **request.args) }}">⟨ Prev</a>
+      {% endif %}
+      <span>Page {{ page }} of {{ total_pages }}</span>
+      {% if page < total_pages %}
+      <a href="{{ url_for('home', page=page+1, **request.args) }}">Next ⟩</a>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

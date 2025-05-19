@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ movie.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container detail-page">
+    <a href="{{ url_for('redirect_home') }}" class="home-button">🏠 Home</a>
+    <div class="detail-card">
+      {% if movie.poster_url %}
+      <img src="{{ movie.poster_url }}" class="detail-poster" alt="{{ movie.title }}">
+      {% else %}
+      <div class="placeholder detail-poster">No Image</div>
+      {% endif %}
+      <div class="detail-info">
+        <h1>{{ movie.title }}</h1>
+        <p><strong>Release Date:</strong> {{ movie.release_date or 'N/A' }}</p>
+        <p><strong>Rating:</strong> ⭐ {{ movie.vote_average }}</p>
+        <p><strong>Genres:</strong> {{ ', '.join(genres) or 'N/A' }}</p>
+        <p class="overview">{{ movie.overview or 'No description available.' }}</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
